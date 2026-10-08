@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:withocr.ViewModels"
+        x:Class="withocr.Views.SettingsWindow"
+        x:DataType="vm:SettingsViewModel"
+        Title="设置"
+        Width="650"
+        Height="230"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto"
+          ColumnDefinitions="Auto,*,Auto"
+          Margin="20"
+          RowSpacing="12"
+          ColumnSpacing="10">
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Text="Tesseract 设置"
+                   FontSize="20"
+                   FontWeight="SemiBold" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="程序路径"
+                   VerticalAlignment="Center" />
+
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 Text="{Binding TesseractPath}"
+                 PlaceholderText="例如：C:\Program Files\Tesseract-OCR\tesseract.exe" />
+
+        <Button Grid.Row="1"
+                Grid.Column="2"
+                Content="浏览"
+                Command="{Binding BrowseCommand}" />
+
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Text="{Binding Message}"
+                   Foreground="{DynamicResource ThemeSystemErrorBrush}"
+                   TextWrapping="Wrap" />
+
+        <StackPanel Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+
+            <Button Content="取消"
+                    Command="{Binding CancelCommand}" />
+
+            <Button Content="保存"
+                    Command="{Binding SaveCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>
