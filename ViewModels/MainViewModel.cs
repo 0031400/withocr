@@ -19,16 +19,10 @@ public partial class MainViewModel : ViewModelBase
 
     private AppConfig _config = new();
 
-    private string? _currentImagePath;
-    private Bitmap? _currentBitmap;
-
     public MainViewModel()
     {
         _configService = new ConfigService();
         _ocrService = new OcrService();
-
-        LoadConfigCommand = new AsyncRelayCommand(LoadConfigAsync);
-
         _ = LoadConfigAsync();
     }
 
@@ -43,8 +37,6 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool isBusy;
-
-    public IAsyncRelayCommand LoadConfigCommand { get; }
 
     public async Task LoadConfigAsync()
     {
@@ -217,11 +209,6 @@ public partial class MainViewModel : ViewModelBase
         {
             await using var stream = File.OpenRead(imagePath);
             var bitmap = new Bitmap(stream);
-
-            _currentImagePath = imagePath;
-            _currentBitmap?.Dispose();
-            _currentBitmap = bitmap;
-
             Image = bitmap;
             OcrText = string.Empty;
 
@@ -249,11 +236,6 @@ public partial class MainViewModel : ViewModelBase
         {
             using var output = File.Create(tempPath);
             bitmap.Save(output, new PngBitmapEncoderOptions());
-
-            _currentImagePath = tempPath;
-
-            _currentBitmap?.Dispose();
-            _currentBitmap = bitmap;
 
             Image = bitmap;
             OcrText = string.Empty;
