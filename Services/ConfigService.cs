@@ -3,7 +3,6 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using withocr.Models;
-
 namespace withocr.Services;
 
 public sealed class ConfigService
@@ -31,12 +30,9 @@ public sealed class ConfigService
 
             await using var stream = File.OpenRead(_configPath);
 
-            var config = await JsonSerializer.DeserializeAsync<AppConfig>(
-                stream,
-                new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+            var config = await JsonSerializer.DeserializeAsync(
+      stream,
+      AppJsonContext.Default.AppConfig);
 
             return config ?? new AppConfig();
         }
@@ -49,11 +45,8 @@ public sealed class ConfigService
     public async Task SaveAsync(AppConfig config)
     {
         var json = JsonSerializer.Serialize(
-            config,
-            new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+          config,
+          AppJsonContext.Default.AppConfig);
 
         await File.WriteAllTextAsync(_configPath, json);
     }
